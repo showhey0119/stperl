@@ -119,30 +119,30 @@ sub max{
 
 # Return the  min value
 sub min{
-	use strict;
-	my(@hoge) = @_;
-	my$min = $hoge[0];
-	foreach(@hoge){
-		if($min > $_){
-			$min = $_;
-		}
-	}
-	return $min;
+    use strict;
+    my(@hoge) = @_;
+    my$min = $hoge[0];
+    foreach(@hoge){
+        if($min > $_){
+            $min = $_;
+        }
+    }
+    return $min;
 }
 
 
 # Permutate the array
 sub permutation{
-	use strict;
-	my(@hoge) = @_;
-	my$n_hoge = scalar @hoge;
-	my@out = ();	
-	for(my$i=0; $i < $n_hoge; $i++){
-		my$r = int(rand($#hoge+1));
-		push(@out, $hoge[$r]);
-		splice(@hoge, $r, 1);
-	}
-	return @out ;
+    use strict;
+    my(@hoge) = @_;
+    my$n_hoge = scalar @hoge;
+    my@out = ();	
+    for(my$i=0; $i < $n_hoge; $i++){
+        my$r = int(rand($#hoge+1));
+        push(@out, $hoge[$r]);
+        splice(@hoge, $r, 1);
+    }
+    return @out ;
 }
 
 
@@ -150,25 +150,25 @@ sub permutation{
 # Two argues are required
 # e.g., @res = &columnTab(\@tmp, \2);
 sub columnTab{
-	use strict;
-	my($hoge, $foo) = @_;
-	my$n_hoge = scalar @$hoge;
-	my@out = ();
-	foreach(@$hoge){
-		my@tmp = split(/\s+/, $_);
-		push (@out, $tmp[$$foo]);
-	}
-	return @out;
+    use strict;
+    my($hoge, $foo) = @_;
+    my$n_hoge = scalar @$hoge;
+    my@out = ();
+    foreach(@$hoge){
+        my@tmp = split(/\s+/, $_);
+        push (@out, $tmp[$$foo]);
+    }
+    return @out;
 }
 
 
 # Union the array
 sub union{
-	use strict;
-	my(@hoge) = @_;
-	my%seen;
-	@hoge = grep (!$seen{$_}++, @hoge);
-	return @hoge;
+    use strict;
+    my(@hoge) = @_;
+    my%seen;
+    @hoge = grep (!$seen{$_}++, @hoge);
+    return @hoge;
 }
 
 
@@ -176,20 +176,20 @@ sub union{
 # Two argues are required
 # e.g., @res = &column(\@tmp, \2);
 sub column{
-	use strict;
-	my($hoge, $foo) = @_;
-	my$n_hoge = scalar@$hoge;
-	my$c_hoge = scalar@{@$hoge[0]};
-	if($$foo >= $c_hoge){
+    use strict;
+    my($hoge, $foo) = @_;
+    my$n_hoge = scalar@$hoge;
+    my$c_hoge = scalar@{@$hoge[0]};
+    if($$foo >= $c_hoge){
         print"Error in column in stat\n";
         print "The second arg is bigger than the number of columns\n";
         exit;
     }
-	my@out = ();
-	for(my$i=0; $i < $n_hoge; $i++){
-		push(@out, $$hoge[$i][$$foo]);
-	}
-	return @out;
+    my@out = ();
+    for(my$i=0; $i < $n_hoge; $i++){
+        push(@out, $$hoge[$i][$$foo]);
+    }
+    return @out;
 }
 
 
@@ -197,10 +197,10 @@ sub column{
 # Two argues are required
 # e.g., @res = &columnSeq(\@tmp, \2);
 sub columnSeq {
-	use strict;
-	my($hoge, $foo) = @_;
-	my@out = map{substr($_, $$foo, 1)}@$hoge;
-	return @out;
+    use strict;
+    my($hoge, $foo) = @_;
+    my@out = map{substr($_, $$foo, 1)}@$hoge;
+    return @out;
 }
 
 
@@ -208,23 +208,23 @@ sub columnSeq {
 # Two argues are required
 # Note that this sub could not be used for numbers.
 sub position{
-	use strict;
-	my($hoge, $foo) = @_;
-	my$cc = 0;
-	foreach my$tmp(@$hoge){
-		if($tmp eq $$foo){
-			return $cc;
-		}
-		$cc++;
-	}
-	# not fount
-	return -1;
+    use strict;
+    my($hoge, $foo) = @_;
+    my$cc = 0;
+    foreach my$tmp(@$hoge){
+        if($tmp eq $$foo){
+            return $cc;
+        }
+        $cc++;
+    }
+    # not fount
+    return -1;
 }
 
 
 # Calculate log10
 sub log10{
-	use strict;
+    use strict;
     my($x) = @_;
     return log($x) / log (10);
 }
@@ -232,38 +232,38 @@ sub log10{
 
 # Calculate log2
 sub log2{
-	use strict;
-	my($x) = @_ ;
-	return log($x) / log (2);
+    use strict;
+    my($x) = @_ ;
+    return log($x) / log (2);
 }
 
 
 # Calculate median
 sub median{
-	use strict ;
-	return unless @_;
-	return $_[0] unless @_ > 1;
-	@_= sort{$a<=>$b}@_;
-	return$_[$#_/2] if @_&1;
-	my$mid= @_/2;
-	return($_[$mid-1]+$_[$mid])/2;
+    use strict ;
+    return unless @_;
+    return $_[0] unless @_ > 1;
+    @_= sort{$a<=>$b}@_;
+    return$_[$#_/2] if @_&1;
+    my$mid= @_/2;
+    return($_[$mid-1]+$_[$mid])/2;
 }
 
 
 # Calculate the factorial of arg
 sub factorial {
     use strict;
-	my($fac) = @_;
-	my$res_fac = 1;
-	if($fac == 0){
-		return 1;
-	}
-	else{
-		for( my$i=1; $i <= $fac; $i++ ){
-			$res_fac *= $i;
-		}
-		return $res_fac ;
-	}
+    my($fac) = @_;
+    my$res_fac = 1;
+    if($fac == 0){
+        return 1;
+    }
+    else{
+        for( my$i=1; $i <= $fac; $i++ ){
+            $res_fac *= $i;
+        }
+        return $res_fac;
+    }
 }
 
 
