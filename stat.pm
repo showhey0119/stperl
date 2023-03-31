@@ -23,99 +23,97 @@
 
 # Calculate summation
 sub sum{
-	use strict;
-	my(@tmp) = @_;	# argument of sample
-	my$res = 0;
-	foreach my$tmp(@tmp){
-		$res += $tmp;
-	}
-	return $res;
+    use strict;
+    my(@tmp) = @_;	# argument of sample
+    my$res = 0;
+    foreach my$tmp(@tmp){
+        $res += $tmp;
+    }
+    return $res;
 }
 
 
 # Calculate mean
 sub mean{
-	use strict;
-	my(@foo) = @_;           # argument of sample
-	my$num = scalar@foo;  # number of sample
-	my$sigma = 0;          # sum of sample
-	
-	foreach my $tmp(@foo){
-		$sigma += $tmp;
-	}
-	
-	return $sigma / $num;
+    use strict;
+    my(@foo) = @_;           # argument of sample
+    my$num = scalar@foo;  # number of sample
+    my$sigma = 0;          # sum of sample
+    foreach my $tmp(@foo){
+        $sigma += $tmp;
+    }
+    return $sigma / $num;
 }
 
 
 # Calculate unbiased standard deviation.
 sub sd{
-	use strict;
-	my(@foo) = @_;            # argument of sample
-	my$num = scalar@foo;   # number of sample
-	my$mean = &mean(@foo); # mean of sample
-	my$sd = 0;              #standard deviation of @foo
-	for(my$i=0; $i < $num; $i++){
-		$sd += ($foo[$i]-$mean) ** 2;
-	}
-	$sd = sqrt($sd/($num-1));
-	return $sd;
+    use strict;
+    my(@foo) = @_;            # argument of sample
+    my$num = scalar@foo;   # number of sample
+    my$mean = &mean(@foo); # mean of sample
+    my$sd = 0;              #standard deviation of @foo
+    for(my$i=0; $i < $num; $i++){
+        $sd += ($foo[$i]-$mean) ** 2;
+    }
+    $sd = sqrt($sd/($num-1));
+    return $sd;
 }
 
 
 # covariance
 sub cov{
-	use strict;	
-	my($foo1, $foo2) = @_; # argument of two sample
-	my$num1 = scalar@$foo1; # number of each sample
-	my$num2 = scalar@$foo2; 
-	# check if array sizes are the same
-	unless($num1 == $num2){
-		print"Error in cov in stat\n";
+    use strict;	
+    my($foo1, $foo2) = @_; # argument of two sample
+    my$num1 = scalar@$foo1; # number of each sample
+    my$num2 = scalar@$foo2; 
+    # check if array sizes are the same
+    unless($num1 == $num2){
+        print"Error in cov in stat\n";
         print"Array sizes are different\n"; 
         exit;	
-	}
-	# calculate covariance
-	my$cov = 0;
-	my$mean1 = &mean(@$foo1);
-	my$mean2 = &mean(@$foo2);
-	for(my$i=0; $i < $num1; $i++){
-		$cov += ($$foo1[$i]-$mean1) * ($$foo2[$i]-$mean2);
-	}
-	return $cov / ($num1-1);
+    }
+    # calculate covariance
+    my$cov = 0;
+    my$mean1 = &mean(@$foo1);
+    my$mean2 = &mean(@$foo2);
+    for(my$i=0; $i < $num1; $i++){
+        $cov += ($$foo1[$i]-$mean1) * ($$foo2[$i]-$mean2);
+    }
+    return $cov / ($num1-1);
 }
 
 
 # Calculate correlation coefficient
 sub cc{
-	use strict;
-	my($foo1,$foo2) = @_;
-	my$num1 = scalar@$foo1;
-	my$num2 = scalar@$foo2; 
+    use strict;
+    my($foo1,$foo2) = @_;
+    my$num1 = scalar@$foo1;
+    my$num2 = scalar@$foo2; 
     # check if array sizes are the same
     unless($num1 == $num2){
         print"Error in cc in stat\n";
         print"Array sizes are different\n";
         exit;
     }
-	my$cov = &cov(\@$foo1, \@$foo2);
-	my$sd1 = &sd(@$foo1);
-	my$sd2 = &sd(@$foo2);
-	return $cov / ($sd1 * $sd2);
+    my$cov = &cov(\@$foo1, \@$foo2);
+    my$sd1 = &sd(@$foo1);
+    my$sd2 = &sd(@$foo2);
+    return $cov / ($sd1 * $sd2);
 }
 
 
 # Return the max value
 sub max{
-	use strict;
-	my(@hoge) = @_;
-	my$max = $hoge[0];
-	foreach(@hoge){
-		if($max < $_){
-			$max = $_;
-		}
-	}
-	return $max;
+    use strict;
+    my(@hoge) = @_;
+    my$max = $hoge[0];
+    foreach(@hoge){
+        if($max < $_){
+            $max = $_;
+        }
+    }
+    return $max;
 }
 
 
