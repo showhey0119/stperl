@@ -2,7 +2,9 @@
 # Module for statistics #
 #########################
 
-# List of sub
+# add "use stat;" to your perl script
+
+# List of functions
 # sum
 # mean
 # sd
@@ -22,6 +24,7 @@
 
 
 # Calculate summation
+# $res = &sum(@array);
 sub sum{
     use strict;
     my(@tmp) = @_;	# argument of sample
@@ -34,6 +37,7 @@ sub sum{
 
 
 # Calculate mean
+# $res = &mean(@array);
 sub mean{
     use strict;
     my(@foo) = @_;           # argument of sample
@@ -47,6 +51,7 @@ sub mean{
 
 
 # Calculate unbiased standard deviation.
+# $res = &sd(@array);
 sub sd{
     use strict;
     my(@foo) = @_;            # argument of sample
@@ -62,6 +67,7 @@ sub sd{
 
 
 # covariance
+# $res = &cov(\@array1, \@array2);
 sub cov{
     use strict;	
     my($foo1, $foo2) = @_; # argument of two sample
@@ -85,6 +91,7 @@ sub cov{
 
 
 # Calculate correlation coefficient
+# $res = &cc(\@array1, \@array2);
 sub cc{
     use strict;
     my($foo1,$foo2) = @_;
@@ -104,6 +111,7 @@ sub cc{
 
 
 # Return the max value
+# $res = &max(@array);
 sub max{
     use strict;
     my(@hoge) = @_;
@@ -118,6 +126,7 @@ sub max{
 
 
 # Return the  min value
+# $res = &min(@array);
 sub min{
     use strict;
     my(@hoge) = @_;
@@ -132,6 +141,7 @@ sub min{
 
 
 # Permutate the array
+# @res = &permutation(@array);
 sub permutation{
     use strict;
     my(@hoge) = @_;
@@ -146,9 +156,8 @@ sub permutation{
 }
 
 
-# Extract a column from a tab array.
-# Two argues are required
-# e.g., @res = &columnTab(\@tmp, \2);
+# Extract $int th column from a tab array.
+# @res = &columnTab(\@array, \$int);
 sub columnTab{
     use strict;
     my($hoge, $foo) = @_;
@@ -163,6 +172,7 @@ sub columnTab{
 
 
 # Union the array
+# @res = &union(@array);
 sub union{
     use strict;
     my(@hoge) = @_;
@@ -172,9 +182,8 @@ sub union{
 }
 
 
-# Extract a column from the 2D array
-# Two argues are required
-# e.g., @res = &column(\@tmp, \2);
+# Extract $int th column from the 2D array
+# @res = &column(\@array, \$int);
 sub column{
     use strict;
     my($hoge, $foo) = @_;
@@ -193,9 +202,8 @@ sub column{
 }
 
 
-# Extract characters of the position of str
-# Two argues are required
-# e.g., @res = &columnSeq(\@tmp, \2);
+# Extract $int th characters of str array
+# @res = &columnSeq(\@array, \$int);
 sub columnSeq {
     use strict;
     my($hoge, $foo) = @_;
@@ -204,9 +212,9 @@ sub columnSeq {
 }
 
 
-# Return the first index of a str  in the array.
-# Two argues are required
+# Return the first index of a str in the array.
 # Note that this sub could not be used for numbers.
+# $res = &position(\@array, \$str);
 sub position{
     use strict;
     my($hoge, $foo) = @_;
@@ -223,6 +231,7 @@ sub position{
 
 
 # Calculate log10
+# $res = &log10($float);
 sub log10{
     use strict;
     my($x) = @_;
@@ -231,6 +240,7 @@ sub log10{
 
 
 # Calculate log2
+# $res = &log2($float);
 sub log2{
     use strict;
     my($x) = @_ ;
@@ -239,8 +249,9 @@ sub log2{
 
 
 # Calculate median
+# $res = &median(@array);
 sub median{
-    use strict ;
+    use strict;
     return unless @_;
     return $_[0] unless @_ > 1;
     @_= sort{$a<=>$b}@_;
@@ -251,7 +262,8 @@ sub median{
 
 
 # Calculate the factorial of arg
-sub factorial {
+# $res = &factorial($int);
+sub factorial{
     use strict;
     my($fac) = @_;
     my$res_fac = 1;
