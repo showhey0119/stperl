@@ -134,7 +134,8 @@ sub fopen_hash_fas3{
         chomp $of ;
         if($of =~ /^>(.+)$/){
             $id = $1;
-            $id =~ s/\s+//g ;
+            my@div = split(/\s+/, $id);
+            $id = $div[0];
             if(exists$$hoge{$id}){
                 print"Error in fopen_hash_fas3\n";
                 print"Multiple $id sequences are found\n";
