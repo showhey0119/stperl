@@ -13,6 +13,73 @@ use warnings ;
 # kaks2
 
 
+# get DNA alignment of CDS sequecnes
+# This uses clustal-omega
+sub get_align_cds_o{
+    my(@cds) = @_;
+    my$n_cds = scalar@cds;
+    #print"# of cds = $n_cds\n";
+    # check CDS
+    my@stop = ();
+    foreach my$cds(@cds){
+        my$l = length$cds;
+        # see if lengths of CDS is a multiple of 3
+        if($l%3 != 0){
+            print"Error in sub get_align_cds_o\nLength\n";exit;
+        }
+        # keep stop codon (if avaiable)
+        my$tmp = substr($cds, $l-3, 3);
+        if(&check_stop_codon(\$tmp)){
+            $cds = substr ($cds, 0, $l-3) ;
+        }
+        else {
+            $tmp = "---";
+        }
+        push(@stop, $tmp);
+    }
+    #print"@stop\n";
+    # translate
+    my@pep = ();
+    foreach my$cds(@cds){
+        my$tmp = &mycodon($cds);
+        push(@pep, $tmp);
+    }
+    #print"@pep\n";
+    # align pep
+    open(TMP, ">pep.fas")||die"$!";
+    for(my$i=0; $i < $n_cds; $i++){
+        print TMP">x$i\n$pep[$i]\n";
+    }
+    close (TMP);
+    # run clustalo
+    system("clustalo -i pep.fas -o pep.fas --force");
+    # algin CDS
+    my%pep = ();
+    &fopen_hash_fas3(\%pep, \ "pep.fas");
+    my@res = ("") x $n_cds;
+    for(my$k=0; $k < $n_cds; $k++){
+        # Convert into array
+        my@tmpp = split("", $pep{"x$k"});
+        my@tmpc = split("", $cds[$k]);
+        # insert gap -> cds
+        my@outc = (); 
+        my$j = -1;
+        foreach(@tmpp){
+            if($_ eq "-"){
+                push(@outc, "-"); push (@outc, "-"); push (@outc, "-");
+            }
+            else{
+                push(@outc, $tmpc[++$j]);
+                push(@outc, $tmpc[++$j]);
+                push(@outc, $tmpc[++$j]);
+            }
+        }
+        $res[$k] = join("", @outc);
+    }
+    return@res;
+}
+
+
 # hash
 my(%syn_change_len) = (
 	'TCA' => 1.0,	# Serine
@@ -254,12 +321,12 @@ sub check_gc4{
     }
 }
 
-sub get_align_DNA {
-	use strict ;
+sub get_align_DNA{
+	use strict;
 
-	my ($foo1, $foo2) = @_ ;
-	$foo1 = uc $foo1 ;
-	$foo2 = uc $foo2 ;
+	my($foo1, $foo2) = @_;
+	$foo1 = uc$foo1;
+	$foo2 = uc$foo2;
 	open (TMP, ">tmp2.fas")|| die "iijjnn\n" ;
 	print TMP ">a\n$foo1\n" ;
 	print TMP ">b\n$foo2\n" ;
@@ -300,7 +367,7 @@ sub get_align_DNA {
 	return @res ;
 }
 	
-sub get_align_cds {
+sub get_align_cds{
 	use strict ;
 	my (@cdsAC) = @_ ;
 	my ($n_cdsAC) = scalar @cdsAC ;
@@ -451,38 +518,34 @@ sub clean_up_cds_multiseq {
 
 # remove codons with gap or not ATGC sites in two sequences
 # assume first codon is ATG and last is terminate codon.
-sub clean_up_cds_2seq {
-	use strict ;
-    my (@seCUP) = @_ ;
-    my ($leCUP) = length $seCUP[0] ;
-
-	@seCUP = map {uc $_} @seCUP ;
-
-    my (@resCUP) = ("", "") ;
-
-    my ($ntCUP1) ;
-    my ($ntCUP2) ;
-
-    for ( my ($pCUP)=3; $pCUP < $leCUP-3; $pCUP+=3 ){
-		$ntCUP1 = substr ($seCUP[0], $pCUP, 3) ;
-		$ntCUP2 = substr ($seCUP[1], $pCUP, 3) ;
-
-		if ( &check_stop_codon ( \$ntCUP1 ) ){next ; }
-		if ( &check_stop_codon ( \$ntCUP2 ) ){next ; }
-
-		unless ( $ntCUP1 =~ /[ATGC][ATGC][ATGC]/ ){next ; }
-		unless ( $ntCUP2 =~ /[ATGC][ATGC][ATGC]/ ){next ; }
-
-		$resCUP[0] = $resCUP[0] . $ntCUP1 ;
-		$resCUP[1] = $resCUP[1] . $ntCUP2 ;
+sub clean_up_cds_2seq{
+	use strict;
+    my@se = @_;
+    my$le = length$se[0];
+    # Convert upper case
+	@se = map{uc $_}@se;
+    # remove unnecessary codon
+    my@res = ("", "");
+    my$nt1;
+    my$nt2;
+    for(my$p=0; $p < $le; $p+=3){
+		$nt1 = substr($se[0], $p, 3);
+		$nt2 = substr($se[1], $p, 3);
+        # remove stop codon
+		if(&check_stop_codon(\$nt1)){next;}
+		if(&check_stop_codon(\$nt2)){next;}
+        # other than ATGC
+		unless($nt1 =~ /^[ATGC][ATGC][ATGC]$/){next;}
+		unless($nt2 =~ /^[ATGC][ATGC][ATGC]$/){next;}
+		$res[0] = $res[0] . $nt1;
+		$res[1] = $res[1] . $nt2;
     }
-
-    my ($lkCUP1) = length $resCUP[0] ;
-    my ($lkCUP2) = length $resCUP[1] ;
-    if ( $lkCUP1%3 != 0 ){print "Error in claen up cds1, $lkCUP1\n" ; exit ; }
-    if ( $lkCUP2%3 != 0 ){print "Error in claen up cds2, $lkCUP2\n" ; exit ; }
-
-    return @resCUP ;
+    my$lk1 = length$res[0];
+    my$lk2 = length$res[1];
+    if($lk1%3 != 0){print "Error in claen up cds1, $lk1\n"; exit;}
+    if($lk2%3 != 0){print "Error in claen up cds2, $lk2\n"; exit;}
+    if($lk1 != $lk2){print"Error in clean up cds3 $lk1 $lk1\n"; exit;}
+    return @res;
 
 }
 
