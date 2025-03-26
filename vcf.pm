@@ -5,6 +5,11 @@
 # add "use vcf;" to your perl script
 
 # List of functions
+# shift9
+# get_genotypes
+# get_allele
+# prop_missing
+# hash_vcf_info
 
 # Remove unnecessary info from the array
 # &shift9(\@arr);
