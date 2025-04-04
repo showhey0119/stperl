@@ -15,6 +15,22 @@
 # hash_vcf_info
 
 
+# Fileter a genothpe
+# &filter_genotype(\$gen);
+sub filter_genotype{
+    my($gen) = @_;
+    if($gen =~ /^[01][\/\|][01]/){
+        $$gen =~ s/^[01][\/\|][01]/\.\/\./;
+    }
+    else{
+        print"E1 in filter_genotype\n";
+        print"Unknown format: $$gen\n";
+        exit;
+    }
+}
+
+
+
 # Get the FORMAT field of a genotype as a hash
 # &get_format(\@format, \$gen, \%res);
 sub get_format{
