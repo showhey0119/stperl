@@ -5,11 +5,24 @@
 # add "use vcf;" to your perl script
 
 # List of functions
+# get_header_acc
 # shift9
 # get_genotypes
 # get_allele
 # prop_missing
 # hash_vcf_info
+
+
+# Get header and sample names from #CHROM
+# &get_header_acc(\@header, \@acc, \$n_acc, \$of);
+sub get_header_acc{
+    my($header, $acc, $n_acc, $line) = @_;
+    @$header = split(/\t/, $$line);
+    @$acc = @$header;
+    &shift9(\@$acc);
+    $$n_acc = scalar@$acc;
+}
+
 
 # Remove unnecessary info from the array
 # &shift9(\@arr);
