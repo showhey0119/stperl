@@ -5,12 +5,31 @@
 # add "use vcf;" to your perl script
 
 # List of functions
+# check_missing
 # get_header_acc
 # shift9
 # get_genotypes
 # get_allele
 # prop_missing
 # hash_vcf_info
+
+
+# Check if a genotype is missing
+# &check_missing(\$gen);
+sub check_missing{
+    my($gen) = @_;
+    if($$gen =~ /^\.\/\./){
+        return 1;
+    }
+    elsif($$gen =~ /^[01][\/\|][01]/){
+        return 0;
+    }
+    else{
+        print"E1 in check_missing: unknown format\n";
+        print"$$gen\n";
+        exit;
+    }
+}
 
 
 # Get header and sample names from #CHROM
