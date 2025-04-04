@@ -19,7 +19,7 @@
 # &filter_genotype(\$gen);
 sub filter_genotype{
     my($gen) = @_;
-    if($gen =~ /^[01][\/\|][01]/){
+    if($$gen =~ /^[01][\/\|][01]/){
         $$gen =~ s/^[01][\/\|][01]/\.\/\./;
     }
     else{
