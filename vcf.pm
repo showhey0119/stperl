@@ -5,6 +5,7 @@
 # add "use vcf;" to your perl script
 
 # List of functions
+# get_format
 # check_missing
 # get_header_acc
 # shift9
@@ -12,6 +13,25 @@
 # get_allele
 # prop_missing
 # hash_vcf_info
+
+
+# Get the FORMAT field of a genotype as a hash
+# &get_format(\@format, \$gen, \%res);
+sub get_format{
+    my($format, $gen, $res) = @_;
+    my@tmp = split(/\:/, $$gen);
+    if(scalar@$format != scalar@tmp){
+        print"E1 in get_format: # columns are different\n";
+        print"@$format\n@tmp\n"; exit;
+    }
+    %$res = ();
+    for(my$i=0; $i < scalar@$format; $i++){
+        if($tmp[$i] =~ /^\.$/){
+            $tmp[$i] = 0;
+        }
+        $$res{$$format[$i]} = $tmp[$i];
+    }
+ }
 
 
 # Check if a genotype is missing
